@@ -1,6 +1,7 @@
 package Log::Stash::Input::Syslog;
 use Moose;
 use POE::Component::Server::Syslog::UDP;
+use POE::Component::Server::Syslog::TCP;
 BEGIN { $ENV{PERL_ANYEVENT_MODEL} = "POE" }
 use AnyEvent;
 use Scalar::Util qw/ weaken /;
@@ -29,10 +30,21 @@ has port => (
     default => 5140,
 );
 
+has protocol => (
+    isa => enum([qw/ tcp udp /]),
+    is => 'ro',
+    default => 'udp',
+);
+
+my %server_class = (
+    udp => 'POE::Component::Server::Syslog::UDP',
+    tcp => 'POE::Component::Server::Syslog::TCP',
+);
+
 sub _start_syslog_listener {
     my $self = shift;
     weaken($self);
-    POE::Component::Server::Syslog::UDP->spawn(
+    $server_class{$self->protocol}->spawn(
         BindAddress => $self->host,
         BindPort    => $self->port,
         InputState  => sub {
@@ -59,7 +71,34 @@ sub BUILD {
 
 Log::Stash::Input::Syslog - input logstash messages from Syslog.
 
+=head1 SYNOPSIS
+
+    logstash --output STDOUT --input Syslog --input_options '{"port":"5140"}'
+
 =head1 DESCRIPTION
+
+Provides a syslogd server for either TCP or UDP syslog.
+
+Can be used to ship syslog logs into a L<Log::Stash> system.
+
+=head1 ATTRIBUTES
+
+=head2 host
+
+The IP to bind the daemon to. By default, binds to 127.0.0.1, which
+means that the server can only be accessed from localhost. Use C<0.0.0.0>
+to bind to all interfaces.
+
+=head2 port
+
+The port to bind to, defaults to 5140, as the default syslog port (514)
+is likely already taken by your regular syslogd, and needs root permission
+to bind to it.
+
+=head2 protocol
+
+The protocol to listen on, can be either C<tcp> or C<udp>, with udp being
+the default.
 
 =head1 SEE ALSO
 
