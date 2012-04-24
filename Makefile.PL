@@ -5,9 +5,9 @@ use Module::Install::AuthorRequires;
 use Module::Install::AuthorTests;
 use Module::Install::Authority;
 
-all_from 'lib/Log/Stash/Input/Syslog.pm';
+all_from 'lib/Log/Stash/Syslog.pm';
 
-license 'AGPL_3';
+license 'perl';
 authority 'GHENRY';
 
 requires 'Moose';

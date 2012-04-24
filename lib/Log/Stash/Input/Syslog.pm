@@ -9,8 +9,6 @@ use Try::Tiny qw/ try catch /;
 use Sys::Hostname::Long qw/ hostname_long /;
 use namespace::autoclean;
 
-our $VERSION = '0.001';
-
 my $hostname = hostname_long();
 
 with qw/
@@ -110,17 +108,9 @@ the default.
 
 =back
 
-=head1 SPONSORSHIP
-
-This module exists due to the wonderful people at Suretec Systems Ltd.
-<http://www.suretecsystems.com/> who sponsored it's development for its
-VoIP division called SureVoIP <http://www.surevoip.co.uk/> for use with
-the SureVoIP API - 
-<http://www.surevoip.co.uk/support/wiki/api_documentation>
-
 =head1 AUTHOR, COPYRIGHT AND LICENSE
 
-See L<Log::Stash>.
+See L<Log::Stash::Syslog>.
 
 =cut
 
