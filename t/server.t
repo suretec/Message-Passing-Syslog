@@ -43,15 +43,17 @@ like $time, qr/^\d+$/;
 is_deeply \@msgs, [
     {
         'hostname' => hostname_long(),
-        'pri' => '171',
-        'severity' => 3,
         'message' => "server.t[$$]: foo",
-        'facility' => 21
+        'facility' => 'local4',
+        'priority_code' => '171',
+        'severity' => 'error',
+        'severity_code' => 3,
+        'facility_code' => 21
     }
 ];
 
-#use Data::Dumper;
-#warn Dumper(\@msgs);
+use Data::Dumper;
+warn Dumper(\@msgs);
 
 done_testing;
 

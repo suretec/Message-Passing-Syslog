@@ -40,6 +40,45 @@ my %server_class = (
     tcp => 'POE::Component::Server::Syslog::TCP',
 );
 
+my %syslog_severities = do { my $i = 0; map { $i++ => $_ } (qw/
+    emergency
+    alert
+    critical
+    error
+    warning
+    notice
+    informational
+    debug
+/) };
+
+my %syslog_facilities = do { my $i = 0; map { $i++ => $_ } (qw/
+    kernel
+    user
+    mail
+    daemon
+    auth
+    syslog
+    lpr
+    news
+    uucp
+    cron
+    authpriv
+    security2
+    ftp
+    NTP
+    audit
+    alert
+    clock2
+    local0
+    local1
+    local2
+    local3
+    local4
+    local5
+    local6
+    local7
+/) };
+
 sub _start_syslog_listener {
     my $self = shift;
     weaken($self);
@@ -52,7 +91,14 @@ sub _start_syslog_listener {
             $message->{epochtime} = delete($message->{time}) || time();
             delete($message->{$_}) for qw/ addr host /;
             $message->{hostname} = $hostname;
-            # FIXME - Turn integer priority / facility etc into
+            $message->{priority_code} = delete($message->{pri});
+            my $severity = delete($message->{severity});
+            $message->{severity} = $syslog_severities{$severity};
+            $message->{severity_code} = $severity;
+            my $fac = delete($message->{facility});
+            $message->{facility} = $syslog_facilities{$fac} || 'unknown';
+            $message->{facility_code} = $fac;
+           # FIXME - Turn integer priority / facility etc into
             #         strings here!
             $self->output_to->consume($message);
         },
