@@ -1,5 +1,6 @@
 package Log::Stash::Input::Syslog;
 use Moose;
+use Moose::Util::TypeConstraints;
 use POE::Component::Server::Syslog::UDP;
 use POE::Component::Server::Syslog::TCP;
 BEGIN { $ENV{PERL_ANYEVENT_MODEL} = "POE" }
@@ -48,7 +49,7 @@ sub _start_syslog_listener {
         InputState  => sub {
             my $message = pop(@_);
             $message->{message} = delete($message->{msg});
-            $message->{epochtime} = delete($message->{time});
+            $message->{epochtime} = delete($message->{time}) || time();
             delete($message->{$_}) for qw/ addr host /;
             $message->{hostname} = $hostname;
             # FIXME - Turn integer priority / facility etc into

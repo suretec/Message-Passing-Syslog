@@ -29,6 +29,8 @@ author_requires 'Pod::Coverage' => '0.19';
 author_requires 'Pod::Coverage::TrustPod';
 author_requires 'Test::Spelling';
 
+author_requires 'Net::Syslog';
+
 author_tests 't/author';
 
 if ($Module::Install::AUTHOR) {

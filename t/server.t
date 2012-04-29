@@ -37,9 +37,11 @@ my $idle; $idle = AnyEvent->idle(cb => sub {
 $cv->recv;
 
 ok scalar(@msgs);
+my $time = delete $msgs[0]->{epochtime};
+like $time, qr/^\d+$/;
+
 is_deeply \@msgs, [
     {
-        'epochtime' => undef,
         'hostname' => hostname_long(),
         'pri' => '171',
         'severity' => 3,
