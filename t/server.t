@@ -52,8 +52,5 @@ is_deeply \@msgs, [
     }
 ];
 
-use Data::Dumper;
-warn Dumper(\@msgs);
-
 done_testing;
 
