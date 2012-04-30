@@ -19,6 +19,7 @@ requires 'JSON::XS';
 requires 'Try::Tiny';
 requires 'Task::Weaken';
 requires 'Log::Stash' => '0.002';
+requires 'Sys::Hostname::Long';
 
 test_requires 'Test::More' => '0.88';
 
