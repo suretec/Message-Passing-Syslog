@@ -1,0 +1,33 @@
+NAME
+    Log::Stash::Input::Syslog - input logstash messages from Syslog.
+
+SYNOPSIS
+        logstash --output STDOUT --input Syslog --input_options '{"port":"5140"}'
+
+DESCRIPTION
+    Provides a syslogd server for either TCP or UDP syslog.
+
+    Can be used to ship syslog logs into a Log::Stash system.
+
+ATTRIBUTES
+  host
+    The IP to bind the daemon to. By default, binds to 127.0.0.1, which
+    means that the server can only be accessed from localhost. Use 0.0.0.0
+    to bind to all interfaces.
+
+  port
+    The port to bind to, defaults to 5140, as the default syslog port (514)
+    is likely already taken by your regular syslogd, and needs root
+    permission to bind to it.
+
+  protocol
+    The protocol to listen on, can be either "tcp" or "udp", with udp being
+    the default.
+
+SEE ALSO
+    Log::Stash::Syslog
+    Log::Stash
+
+AUTHOR, COPYRIGHT AND LICENSE
+    See Log::Stash::Syslog.
+
