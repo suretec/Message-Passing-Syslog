@@ -8,8 +8,8 @@ BEGIN {
 }
 
 use Sys::Hostname::Long qw/ hostname_long /;
-use Log::Stash::Input::Syslog;
-use Log::Stash::Output::Callback;
+use Message::Passing::Input::Syslog;
+use Message::Passing::Output::Callback;
 use Net::Syslog;
 use AnyEvent;
 
@@ -20,8 +20,8 @@ my $syslog = Net::Syslog->new(
 );
 
 my @msgs;
-my $l = Log::Stash::Input::Syslog->new(
-    output_to => Log::Stash::Output::Callback->new(
+my $l = Message::Passing::Input::Syslog->new(
+    output_to => Message::Passing::Output::Callback->new(
         cb => sub {
             push(@msgs, shift());
             $cv->send;

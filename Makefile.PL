@@ -5,7 +5,7 @@ use Module::Install::AuthorRequires;
 use Module::Install::AuthorTests;
 use Module::Install::Authority;
 
-all_from 'lib/Log/Stash/Syslog.pm';
+all_from 'lib/Message/Passing/Syslog.pm';
 
 license 'perl';
 authority 'GHENRY';
@@ -13,12 +13,12 @@ authority 'GHENRY';
 requires 'Moose';
 requires 'namespace::autoclean';
 requires 'AnyEvent';
-requires 'POE::Component::Server::Syslog::UDP';
+requires 'POE::Component::Server::Syslog';
 requires 'JSON';
 requires 'JSON::XS';
 requires 'Try::Tiny';
 requires 'Task::Weaken';
-requires 'Log::Stash' => '0.002';
+requires 'Message::Passing' => '0.002';
 requires 'Sys::Hostname::Long';
 
 test_requires 'Test::More' => '0.88';
@@ -35,7 +35,7 @@ author_requires 'Net::Syslog';
 author_tests 't/author';
 
 if ($Module::Install::AUTHOR) {
-    system("pod2text lib/Log/Stash/Input/Syslog.pm > README")
+    system("pod2text lib/Message/Passing/Input/Syslog.pm > README")
         and die $!;
 }
 

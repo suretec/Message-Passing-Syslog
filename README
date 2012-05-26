@@ -1,5 +1,5 @@
 NAME
-    Log::Stash::Input::Syslog - input logstash messages from Syslog.
+    Message::Passing::Input::Syslog - input logstash messages from Syslog.
 
 SYNOPSIS
         logstash --output STDOUT --input Syslog --input_options '{"port":"5140"}'
@@ -7,7 +7,7 @@ SYNOPSIS
 DESCRIPTION
     Provides a syslogd server for either TCP or UDP syslog.
 
-    Can be used to ship syslog logs into a Log::Stash system.
+    Can be used to ship syslog logs into a Message::Passing system.
 
 ATTRIBUTES
   host
@@ -25,9 +25,9 @@ ATTRIBUTES
     the default.
 
 SEE ALSO
-    Log::Stash::Syslog
-    Log::Stash
+    Message::Passing::Syslog
+    Message::Passing
 
 AUTHOR, COPYRIGHT AND LICENSE
-    See Log::Stash::Syslog.
+    See Message::Passing::Syslog.
 

@@ -1,4 +1,4 @@
-package Log::Stash::Input::Syslog;
+package Message::Passing::Input::Syslog;
 use Moose;
 use Moose::Util::TypeConstraints;
 use POE::Component::Server::Syslog::UDP;
@@ -13,7 +13,7 @@ use namespace::autoclean;
 my $hostname = hostname_long();
 
 with qw/
-    Log::Stash::Role::Input
+    Message::Passing::Role::Input
 /;
 
 has host => (
@@ -114,7 +114,7 @@ sub BUILD {
 
 =head1 NAME
 
-Log::Stash::Input::Syslog - input logstash messages from Syslog.
+Message::Passing::Input::Syslog - input logstash messages from Syslog.
 
 =head1 SYNOPSIS
 
@@ -124,7 +124,7 @@ Log::Stash::Input::Syslog - input logstash messages from Syslog.
 
 Provides a syslogd server for either TCP or UDP syslog.
 
-Can be used to ship syslog logs into a L<Log::Stash> system.
+Can be used to ship syslog logs into a L<Message::Passing> system.
 
 =head1 ATTRIBUTES
 
@@ -149,15 +149,15 @@ the default.
 
 =over
 
-=item L<Log::Stash::Syslog>
+=item L<Message::Passing::Syslog>
 
-=item L<Log::Stash>
+=item L<Message::Passing>
 
 =back
 
 =head1 AUTHOR, COPYRIGHT AND LICENSE
 
-See L<Log::Stash::Syslog>.
+See L<Message::Passing::Syslog>.
 
 =cut
 

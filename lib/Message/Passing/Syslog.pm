@@ -1,4 +1,4 @@
-package Log::Stash::Syslog;
+package Message::Passing::Syslog;
 use strict;
 use warnings;
 BEGIN { $ENV{PERL_ANYEVENT_MODEL} = "POE" }
@@ -9,7 +9,7 @@ our $VERSION = '0.001';
 
 =head1 NAME
 
-Log::Stash::Syslog - input and output logstash messages from/to Syslog.
+Message::Passing::Syslog - input and output logstash messages from/to Syslog.
 
 =head1 SYNOPSIS
 
@@ -25,9 +25,9 @@ Provides a syslogd server and client for either TCP or UDP syslog.
 
 =over
 
-=item L<Log::Stash::Input::Syslog>
+=item L<Message::Passing::Input::Syslog>
 
-=item L<Log::Stash::Output::Syslog>
+=item L<Message::Passing::Output::Syslog>
 
 =back
 

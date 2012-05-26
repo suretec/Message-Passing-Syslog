@@ -1,4 +1,4 @@
-package Log::Stash::Output::Syslog;
+package Message::Passing::Output::Syslog;
 use Moose;
 use Moose::Util::TypeConstraints;
 use AnyEvent;
@@ -10,7 +10,7 @@ use namespace::autoclean;
 my $hostname = hostname_long();
 
 with qw/
-    Log::Stash::Role::Output
+    Message::Passing::Role::Output
 /;
 
 has host => (
@@ -80,7 +80,7 @@ sub BUILD {
 
 =head1 NAME
 
-Log::Stash::Output::Syslog - output logstash messages to Syslog.
+Message::Passing::Output::Syslog - output logstash messages to Syslog.
 
 =head1 SYNOPSIS
 
@@ -90,7 +90,7 @@ Log::Stash::Output::Syslog - output logstash messages to Syslog.
 
 Provides a syslogd client.
 
-Can be used to ship syslog logs into a L<Log::Stash> system.
+Can be used to ship syslog logs into a L<Message::Passing> system.
 
 =head1 ATTRIBUTES
 
@@ -115,15 +115,15 @@ the default.
 
 =over
 
-=item L<Log::Stash::Syslog>
+=item L<Message::Passing::Syslog>
 
-=item L<Log::Stash>
+=item L<Message::Passing>
 
 =back
 
 =head1 AUTHOR, COPYRIGHT AND LICENSE
 
-See L<Log::Stash::Syslog>.
+See L<Message::Passing::Syslog>.
 
 =cut
 
