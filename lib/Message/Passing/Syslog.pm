@@ -3,7 +3,8 @@ use strict;
 use warnings;
 BEGIN { $ENV{PERL_ANYEVENT_MODEL} = "POE" }
 
-our $VERSION = '0.001';
+our $VERSION = '0.001_01';
+$VERSION = eval $VERSION;
 
 1;
 
