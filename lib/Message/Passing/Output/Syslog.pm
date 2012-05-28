@@ -80,13 +80,15 @@ sub BUILD {
 
 =head1 NAME
 
-Message::Passing::Output::Syslog - output logstash messages to Syslog.
+Message::Passing::Output::Syslog - output messages to Syslog.
 
 =head1 SYNOPSIS
 
-    logstash --output STDOUT --output Syslog --output_options '{"port":"5140"}'
+    message-pass --output STDOUT --output Syslog --output_options '{"port":"5140"}'
 
 =head1 DESCRIPTION
+
+B<NOTE> This module is not currently functional!
 
 Provides a syslogd client.
 

@@ -114,11 +114,11 @@ sub BUILD {
 
 =head1 NAME
 
-Message::Passing::Input::Syslog - input logstash messages from Syslog.
+Message::Passing::Input::Syslog - input messages from Syslog.
 
 =head1 SYNOPSIS
 
-    logstash --output STDOUT --input Syslog --input_options '{"port":"5140"}'
+    message-pass --output STDOUT --input Syslog --input_options '{"port":"5140"}'
 
 =head1 DESCRIPTION
 

@@ -10,13 +10,13 @@ $VERSION = eval $VERSION;
 
 =head1 NAME
 
-Message::Passing::Syslog - input and output logstash messages from/to Syslog.
+Message::Passing::Syslog - input and output messages from/to Syslog.
 
 =head1 SYNOPSIS
 
-    logstash --output STDOUT --input Syslog --input_options '{"port":"5140"}'
+    message-pass --output STDOUT --input Syslog --input_options '{"port":"5140"}'
 
-    logstash --input STDIN --output Syslog --output_options 'xxx'
+    message-pass --input STDIN --output Syslog --output_options 'xxx'
 
 =head1 DESCRIPTION
 
