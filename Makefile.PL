@@ -21,7 +21,7 @@ requires 'JSON';
 requires 'JSON::XS';
 requires 'Try::Tiny';
 requires 'Task::Weaken';
-requires 'Message::Passing' => '0.002';
+requires 'Message::Passing' => '0.008';
 requires 'Sys::Hostname::Long';
 
 test_requires 'Test::More' => '0.88';

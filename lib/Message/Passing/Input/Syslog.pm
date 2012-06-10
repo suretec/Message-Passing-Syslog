@@ -14,20 +14,14 @@ my $hostname = hostname_long();
 
 with qw/
     Message::Passing::Role::Input
+    Message::Passing::Role::HasHostnameAndPort
 /;
 
-has host => (
-    isa => 'Str',
-    is => 'ro',
+has '+hostname' => (
     default => '127.0.0.1',
 );
 
-has port => (
-    isa => 'Int',
-    required => 1,
-    is => 'ro',
-    default => 5140,
-);
+sub _default_port { 5140 }
 
 has protocol => (
     isa => enum([qw/ tcp udp /]),
@@ -83,7 +77,7 @@ sub _start_syslog_listener {
     my $self = shift;
     weaken($self);
     $server_class{$self->protocol}->spawn(
-        BindAddress => $self->host,
+        BindAddress => $self->hostname,
         BindPort    => $self->port,
         InputState  => sub {
             my $message = pop(@_);
@@ -118,7 +112,7 @@ Message::Passing::Input::Syslog - input messages from Syslog.
 
 =head1 SYNOPSIS
 
-    message-pass --output STDOUT --input Syslog --input_options '{"port":"5140"}'
+    message-pass --output STDOUT --input Syslog --input_options '{"hostname":"127.0.0.1","port":"5140"}'
 
 =head1 DESCRIPTION
 
@@ -128,7 +122,7 @@ Can be used to ship syslog logs into a L<Message::Passing> system.
 
 =head1 ATTRIBUTES
 
-=head2 host
+=head2 hostname
 
 The IP to bind the daemon to. By default, binds to 127.0.0.1, which
 means that the server can only be accessed from localhost. Use C<0.0.0.0>

@@ -2,7 +2,7 @@ NAME
     Message::Passing::Input::Syslog - input messages from Syslog.
 
 SYNOPSIS
-        message-pass --output STDOUT --input Syslog --input_options '{"port":"5140"}'
+        message-pass --output STDOUT --input Syslog --input_options '{"hostname":"127.0.0.1","port":"5140"}'
 
 DESCRIPTION
     Provides a syslogd server for either TCP or UDP syslog.
@@ -10,7 +10,7 @@ DESCRIPTION
     Can be used to ship syslog logs into a Message::Passing system.
 
 ATTRIBUTES
-  host
+  hostname
     The IP to bind the daemon to. By default, binds to 127.0.0.1, which
     means that the server can only be accessed from localhost. Use 0.0.0.0
     to bind to all interfaces.

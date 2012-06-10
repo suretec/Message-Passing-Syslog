@@ -11,20 +11,14 @@ my $hostname = hostname_long();
 
 with qw/
     Message::Passing::Role::Output
+    Message::Passing::Role::HasHostnameAndPort
 /;
 
-has host => (
-    isa => 'Str',
-    is => 'ro',
+has '+hostname' => (
     default => '127.0.0.1',
 );
 
-has port => (
-    isa => 'Int',
-    required => 1,
-    is => 'ro',
-    default => 5140,
-);
+sub _default_port { 5140 }
 
 has protocol => (
     isa => enum([qw/ tcp udp /]),
@@ -84,7 +78,7 @@ Message::Passing::Output::Syslog - output messages to Syslog.
 
 =head1 SYNOPSIS
 
-    message-pass --output STDOUT --output Syslog --output_options '{"port":"5140"}'
+    message-pass --output STDOUT --output Syslog --output_options '{"hostname":"127.0.0.1","port":"5140"}'
 
 =head1 DESCRIPTION
 
@@ -92,25 +86,21 @@ B<NOTE> This module is not currently functional!
 
 Provides a syslogd client.
 
-Can be used to ship syslog logs into a L<Message::Passing> system.
+Can be used to ship syslog logs from a L<Message::Passing> system.
 
 =head1 ATTRIBUTES
 
-=head2 host
+=head2 hostname
 
-The IP to bind the daemon to. By default, binds to 127.0.0.1, which
-means that the server can only be accessed from localhost. Use C<0.0.0.0>
-to bind to all interfaces.
+The hostname to connect to
 
 =head2 port
 
-The port to bind to, defaults to 5140, as the default syslog port (514)
-is likely already taken by your regular syslogd, and needs root permission
-to bind to it.
+The port to connect to, defaults to 5140.
 
 =head2 protocol
 
-The protocol to listen on, can be either C<tcp> or C<udp>, with udp being
+The protocol to send messages on, can be either C<tcp> or C<udp>, with udp being
 the default.
 
 =head1 SEE ALSO
