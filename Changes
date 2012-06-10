@@ -1,3 +1,4 @@
+0.003
     - Change 'host' command line option to 'hostname' to fit in
       with other adaptors
 
