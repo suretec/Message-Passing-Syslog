@@ -21,6 +21,7 @@ requires 'Try::Tiny';
 requires 'Task::Weaken';
 requires 'Message::Passing' => '0.104';
 requires 'Sys::Hostname::Long';
+requires 'Time::ParseDate';
 
 test_requires 'Test::More' => '0.88';
 

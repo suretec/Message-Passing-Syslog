@@ -1,3 +1,5 @@
+   - Fix dependencies by requiring Time::ParseDate
+
 0.004
     - Drop need for POE by implementing in plain AnyEvent
       (POE and AnyEvent aren't getting on nicely for me in a
