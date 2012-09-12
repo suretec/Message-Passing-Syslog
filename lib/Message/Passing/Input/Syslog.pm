@@ -1,38 +1,35 @@
 package Message::Passing::Input::Syslog;
-use Moose;
-use Moose::Util::TypeConstraints;
-use POE::Component::Server::Syslog::UDP;
-use POE::Component::Server::Syslog::TCP;
-BEGIN { $ENV{PERL_ANYEVENT_MODEL} = "POE" }
-use AnyEvent;
-use Scalar::Util qw/ weaken /;
-use Try::Tiny qw/ try catch /;
+use Moo;
+use MRO::Compat;
+use Time::ParseDate;
 use Sys::Hostname::Long qw/ hostname_long /;
-use namespace::autoclean;
+use namespace::clean -except => 'meta';
 
 my $hostname = hostname_long();
 
-with qw/
-    Message::Passing::Role::Input
-    Message::Passing::Role::HasHostnameAndPort
-/;
+extends 'Message::Passing::Input::Socket::UDP';
 
-has '+hostname' => (
-    default => '127.0.0.1',
+has '+port' => (
+    default => sub { 5140 },
+    required => 0,
 );
-
-sub _default_port { 5140 }
 
 has protocol => (
-    isa => enum([qw/ tcp udp /]),
     is => 'ro',
-    default => 'udp',
+    default => sub { 'udp' },
 );
 
-my %server_class = (
-    udp => 'POE::Component::Server::Syslog::UDP',
-    tcp => 'POE::Component::Server::Syslog::TCP',
-);
+our $SYSLOG_REGEXP = q|
+^<(\d+)>                       # priority -- 1
+    (?:
+        (\S{3})\s+(\d+)        # month day -- 2, 3
+        \s
+        (\d+):(\d+):(\d+)      # time  -- 4, 5, 6
+    )?
+    \s*
+    (.*)                       # text  --  7
+$
+|;
 
 my %syslog_severities = do { my $i = 0; map { $i++ => $_ } (qw/
     emergency
@@ -73,35 +70,28 @@ my %syslog_facilities = do { my $i = 0; map { $i++ => $_ } (qw/
     local7
 /) };
 
-sub _start_syslog_listener {
-    my $self = shift;
-    weaken($self);
-    $server_class{$self->protocol}->spawn(
-        BindAddress => $self->hostname,
-        BindPort    => $self->port,
-        InputState  => sub {
-            my $message = pop(@_);
-            $message->{message} = delete($message->{msg});
-            $message->{epochtime} = delete($message->{time}) || time();
-            delete($message->{$_}) for qw/ addr host /;
-            $message->{hostname} = $hostname;
-            $message->{priority_code} = delete($message->{pri});
-            my $severity = delete($message->{severity});
-            $message->{severity} = $syslog_severities{$severity};
-            $message->{severity_code} = $severity;
-            my $fac = delete($message->{facility});
-            $message->{facility} = $syslog_facilities{$fac} || 'unknown';
-            $message->{facility_code} = $fac;
-           # FIXME - Turn integer priority / facility etc into
-            #         strings here!
-            $self->output_to->consume($message);
-        },
-    );
-}
-
 sub BUILD {
     my $self = shift;
-    $self->_start_syslog_listener;
+    die sprintf("Protocol '%s' is not supported, only 'udp' currently", $self->protocol)
+        if $self->protocol ne 'udp';
+}
+
+sub _send_data {
+    my ( $self, $message, $from ) = @_;
+    if ( $message =~ s/$SYSLOG_REGEXP//sx ) {
+        my $time = $2 && parsedate("$2 $3 $4:$5:$6");
+        my $facility = int($1/8);
+        my $severity = int($1%8);
+        $self->output_to->consume({
+            epochtime     => $time || time(),
+            facility_code => $facility,
+            severity_code => $severity,
+            facility => $syslog_facilities{$facility} || 'unknown',
+            severity => $syslog_severities{$severity} || 'unknown',
+            message      => $7,
+            hostname => $hostname,
+        });
+    }
 }
 
 1;
@@ -112,7 +102,7 @@ Message::Passing::Input::Syslog - input messages from Syslog.
 
 =head1 SYNOPSIS
 
-    message-pass --output STDOUT --input Syslog --input_options '{"hostname":"127.0.0.1","port":"5140"}'
+    message-pass --output STDOUT --input Syslog --input_options '{"hostna
 
 =head1 DESCRIPTION
 
@@ -131,13 +121,12 @@ to bind to all interfaces.
 =head2 port
 
 The port to bind to, defaults to 5140, as the default syslog port (514)
-is likely already taken by your regular syslogd, and needs root permission
+is likely already taken by your regular syslogd, and needs root permissio
 to bind to it.
 
 =head2 protocol
 
-The protocol to listen on, can be either C<tcp> or C<udp>, with udp being
-the default.
+The protocol to listen on, currently only UDP is supported.
 
 =head1 SEE ALSO
 
@@ -154,5 +143,3 @@ the default.
 See L<Message::Passing::Syslog>.
 
 =cut
-
-

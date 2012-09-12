@@ -45,7 +45,6 @@ is_deeply \@msgs, [
         'hostname' => hostname_long(),
         'message' => "server.t[$$]: foo",
         'facility' => 'local4',
-        'priority_code' => '171',
         'severity' => 'error',
         'severity_code' => 3,
         'facility_code' => 21

@@ -13,15 +13,13 @@ resources(
     repository => "git://github.com/suretec/Message-Passing-Syslog.git",
 );
 
-requires 'Moose';
-requires 'namespace::autoclean';
+requires 'Moo';
+requires 'namespace::clean';
 requires 'AnyEvent';
-requires 'POE::Component::Server::Syslog';
 requires 'JSON';
-requires 'JSON::XS';
 requires 'Try::Tiny';
 requires 'Task::Weaken';
-requires 'Message::Passing' => '0.008';
+requires 'Message::Passing' => '0.104';
 requires 'Sys::Hostname::Long';
 
 test_requires 'Test::More' => '0.88';

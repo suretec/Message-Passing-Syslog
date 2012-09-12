@@ -1,3 +1,9 @@
+    - Drop need for POE by implementing in plain AnyEvent
+      (POE and AnyEvent aren't getting on nicely for me in a
+      real environment)
+    - Drop support for TCP syslog as I'm not using it / can't test
+      it currently.
+
 0.003
     - Change 'host' command line option to 'hostname' to fit in
       with other adaptors

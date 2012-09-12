@@ -2,7 +2,7 @@ NAME
     Message::Passing::Input::Syslog - input messages from Syslog.
 
 SYNOPSIS
-        message-pass --output STDOUT --input Syslog --input_options '{"hostname":"127.0.0.1","port":"5140"}'
+        message-pass --output STDOUT --input Syslog --input_options '{"hostna
 
 DESCRIPTION
     Provides a syslogd server for either TCP or UDP syslog.
@@ -18,11 +18,10 @@ ATTRIBUTES
   port
     The port to bind to, defaults to 5140, as the default syslog port (514)
     is likely already taken by your regular syslogd, and needs root
-    permission to bind to it.
+    permissio to bind to it.
 
   protocol
-    The protocol to listen on, can be either "tcp" or "udp", with udp being
-    the default.
+    The protocol to listen on, currently only UDP is supported.
 
 SEE ALSO
     Message::Passing::Syslog
