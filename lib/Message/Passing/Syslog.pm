@@ -1,7 +1,6 @@
 package Message::Passing::Syslog;
 use strict;
 use warnings;
-BEGIN { $ENV{PERL_ANYEVENT_MODEL} = "POE" }
 
 our $VERSION = '0.005';
 $VERSION = eval $VERSION;

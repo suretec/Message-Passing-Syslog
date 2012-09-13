@@ -1,3 +1,5 @@
+   - Stop forcing AnyEvent model to POE.
+
 0.005
    - Fix dependencies by requiring Time::ParseDate
 
