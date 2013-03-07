@@ -5,6 +5,7 @@ use AnyEvent;
 use Scalar::Util qw/ weaken /;
 use Try::Tiny qw/ try catch /;
 use Sys::Hostname::Long qw/ hostname_long /;
+use Net::Syslog;
 use namespace::autoclean;
 
 my $hostname = hostname_long();
@@ -24,6 +25,18 @@ has protocol => (
     isa => enum([qw/ tcp udp /]),
     is => 'ro',
     default => 'udp',
+);
+
+has syslog => (
+    isa     => 'Net::Syslog',
+    is      => 'ro',
+    lazy    => 1,
+    default => sub {
+        Net::Syslog->new(
+            SyslogHost => $_[0]->hostname,
+            SyslogPort => $_[0]->port
+        );
+    },
 );
 
 my %syslog_severities = do { my $i = 0; map { $i++ => $_ } (qw/
@@ -65,10 +78,7 @@ my %syslog_facilities = do { my $i = 0; map { $i++ => $_ } (qw/
     local7
 /) };
 
-sub BUILD {
-    my $self = shift;
-    die "Not implemented";
-}
+sub consume { shift->syslog->send(@_) } 
 
 1;
 
