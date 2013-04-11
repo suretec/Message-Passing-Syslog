@@ -92,8 +92,6 @@ Message::Passing::Output::Syslog - output messages to Syslog.
 
 =head1 DESCRIPTION
 
-B<NOTE> This module is not currently functional!
-
 Provides a syslogd client.
 
 Can be used to ship syslog logs from a L<Message::Passing> system.
@@ -110,8 +108,7 @@ The port to connect to, defaults to 5140.
 
 =head2 protocol
 
-The protocol to send messages on, can be either C<tcp> or C<udp>, with udp being
-the default.
+Because of the implementation of the underlying library this module currently always uses C<udp>. You are free however to set this to C<tcp> if that makes you happy.
 
 =head1 SEE ALSO
 
