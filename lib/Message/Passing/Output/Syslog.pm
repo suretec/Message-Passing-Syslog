@@ -5,6 +5,7 @@ use AnyEvent;
 use Scalar::Util qw/ weaken /;
 use Try::Tiny qw/ try catch /;
 use Sys::Hostname::Long qw/ hostname_long /;
+use Net::Syslog;
 use namespace::autoclean;
 
 my $hostname = hostname_long();
@@ -24,6 +25,18 @@ has protocol => (
     isa => enum([qw/ tcp udp /]),
     is => 'ro',
     default => 'udp',
+);
+
+has syslog => (
+    isa     => 'Net::Syslog',
+    is      => 'ro',
+    lazy    => 1,
+    default => sub {
+        Net::Syslog->new(
+            SyslogHost => $_[0]->hostname,
+            SyslogPort => $_[0]->port
+        );
+    },
 );
 
 my %syslog_severities = do { my $i = 0; map { $i++ => $_ } (qw/
@@ -65,10 +78,7 @@ my %syslog_facilities = do { my $i = 0; map { $i++ => $_ } (qw/
     local7
 /) };
 
-sub BUILD {
-    my $self = shift;
-    die "Not implemented";
-}
+sub consume { shift->syslog->send(@_) } 
 
 1;
 
@@ -81,8 +91,6 @@ Message::Passing::Output::Syslog - output messages to Syslog.
     message-pass --output STDOUT --output Syslog --output_options '{"hostname":"127.0.0.1","port":"5140"}'
 
 =head1 DESCRIPTION
-
-B<NOTE> This module is not currently functional!
 
 Provides a syslogd client.
 
@@ -100,8 +108,7 @@ The port to connect to, defaults to 5140.
 
 =head2 protocol
 
-The protocol to send messages on, can be either C<tcp> or C<udp>, with udp being
-the default.
+Because of the implementation of the underlying library this module currently always uses C<udp>. You are free however to set this to C<tcp> if that makes you happy.
 
 =head1 SEE ALSO
 
