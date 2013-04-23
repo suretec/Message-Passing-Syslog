@@ -3,9 +3,10 @@ use Moo;
 use MRO::Compat;
 use Time::ParseDate;
 use Sys::Hostname::Long qw/ hostname_long /;
+use Socket qw( getnameinfo );
 use namespace::clean -except => 'meta';
 
-my $hostname = hostname_long();
+my $our_hostname = hostname_long();
 
 extends 'Message::Passing::Input::Socket::UDP';
 
@@ -17,6 +18,11 @@ has '+port' => (
 has protocol => (
     is => 'ro',
     default => sub { 'udp' },
+);
+
+has remote_hostname => (
+    is => 'ro',
+    default => sub { 0 },
 );
 
 our $SYSLOG_REGEXP = q|
@@ -82,6 +88,11 @@ sub _send_data {
         my $time = $2 && parsedate("$2 $3 $4:$5:$6");
         my $facility = int($1/8);
         my $severity = int($1%8);
+        my $log_hostname = $our_hostname;
+        if ( $self->remote_hostname ) {
+            my ($err, $hostname, $servicename) = getnameinfo($from);
+            $log_hostname = $hostname;
+        }
         $self->output_to->consume({
             epochtime     => $time || time(),
             facility_code => $facility,
@@ -89,7 +100,7 @@ sub _send_data {
             facility => $syslog_facilities{$facility} || 'unknown',
             severity => $syslog_severities{$severity} || 'unknown',
             message      => $7,
-            hostname => $hostname,
+            hostname => $log_hostname,
         });
     }
 }
@@ -127,6 +138,12 @@ to bind to it.
 =head2 protocol
 
 The protocol to listen on, currently only UDP is supported.
+
+=head2 remote_hostname
+
+Set to true to store the remote instead of the servers' hostname in the
+hostname attribute.
+Defaults to false for backward compatibility.
 
 =head1 SEE ALSO
 
