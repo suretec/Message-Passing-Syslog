@@ -1,3 +1,4 @@
+0.008
    - Add remote_hostname attribute to Input::Syslog (abraxxa)
 
 0.007
