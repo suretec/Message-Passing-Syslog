@@ -1,32 +1,21 @@
 NAME
-    Message::Passing::Input::Syslog - input messages from Syslog.
+    Message::Passing::Syslog - input and output messages from/to Syslog.
 
 SYNOPSIS
-        message-pass --output STDOUT --input Syslog --input_options '{"hostna
+        message-pass --input Syslog --input_options '{"port":"5140"}' --output STDOUT
+
+        message-pass --input STDIN --output Syslog --output_options '{"hostname":"127.0.0.1","port":"5140"}'
 
 DESCRIPTION
-    Provides a syslogd server for either TCP or UDP syslog.
-
-    Can be used to ship syslog logs into a Message::Passing system.
-
-ATTRIBUTES
-  hostname
-    The IP to bind the daemon to. By default, binds to 127.0.0.1, which
-    means that the server can only be accessed from localhost. Use 0.0.0.0
-    to bind to all interfaces.
-
-  port
-    The port to bind to, defaults to 5140, as the default syslog port (514)
-    is likely already taken by your regular syslogd, and needs root
-    permissio to bind to it.
-
-  protocol
-    The protocol to listen on, currently only UDP is supported.
+    Provides a syslogd server and client for either TCP or UDP syslog.
 
 SEE ALSO
-    Message::Passing::Syslog
-    Message::Passing
+    Message::Passing::Input::Syslog
+    Message::Passing::Output::Syslog
 
-AUTHOR, COPYRIGHT AND LICENSE
-    See Message::Passing::Syslog.
+AUTHOR and COPYRIGHT
+    Tomas Doran
+
+LICENSE
+    Same terms as perl itself.
 

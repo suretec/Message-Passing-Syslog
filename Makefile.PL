@@ -38,7 +38,7 @@ author_requires(
 author_tests 't/author';
 
 if ($Module::Install::AUTHOR) {
-    system("pod2text lib/Message/Passing/Input/Syslog.pm > README")
+    system("pod2text lib/Message/Passing/Syslog.pm > README")
         and die $!;
 }
 
