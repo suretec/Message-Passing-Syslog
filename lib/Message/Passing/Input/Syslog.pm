@@ -91,7 +91,8 @@ sub _send_data {
         my $log_hostname = $our_hostname;
         if ( $self->remote_hostname ) {
             my ( $err, $hostname, $servicename ) = getnameinfo( $from, NI_NUMERICHOST,  NI_NUMERICSERV );
-            $log_hostname = $hostname;
+            $log_hostname = $hostname
+                unless $err;
         }
         $self->output_to->consume({
             epochtime     => $time || time(),
