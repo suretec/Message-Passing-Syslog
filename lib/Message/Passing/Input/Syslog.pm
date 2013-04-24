@@ -113,7 +113,7 @@ Message::Passing::Input::Syslog - input messages from Syslog.
 
 =head1 SYNOPSIS
 
-    message-pass --output STDOUT --input Syslog --input_options '{"port":"5140"}'
+    message-pass --input Syslog --input_options '{"port":"5140"}' --output STDOUT
 
 =head1 DESCRIPTION
 
