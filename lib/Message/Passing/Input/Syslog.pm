@@ -118,7 +118,7 @@ Message::Passing::Input::Syslog - input messages from Syslog.
 
 =head1 DESCRIPTION
 
-Provides a syslogd server for either TCP or UDP syslog.
+Provides a syslog server for UDP syslog.
 
 Can be used to ship syslog logs into a L<Message::Passing> system.
 
