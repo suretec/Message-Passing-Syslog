@@ -43,7 +43,7 @@ like $time, qr/^\d+$/;
 
 is_deeply \@msgs, [
     {
-        'hostname' => 'localhost',
+        'hostname' => '127.0.0.1',
         'message' => "server_with_remote_hostname.t[$$]: foo",
         'facility' => 'local4',
         'severity' => 'error',
