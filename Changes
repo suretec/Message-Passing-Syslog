@@ -2,17 +2,17 @@
       rather than doing a reverse DNS lookup per syslog packet
 
 0.008
-   - Add remote_hostname attribute to Input::Syslog (abraxxa)
+    - Add remote_hostname attribute to Input::Syslog (abraxxa)
 
 0.007
-   - Add tests (perigrin)
-   - Add an output (perigrin)
+    - Add tests (perigrin)
+    - Add an output (perigrin)
 
 0.006
-   - Stop forcing AnyEvent model to POE.
+    - Stop forcing AnyEvent model to POE.
 
 0.005
-   - Fix dependencies by requiring Time::ParseDate
+    - Fix dependencies by requiring Time::ParseDate
 
 0.004
     - Drop need for POE by implementing in plain AnyEvent
