@@ -88,7 +88,7 @@ Message::Passing::Output::Syslog - output messages to Syslog.
 
 =head1 SYNOPSIS
 
-    message-pass --output STDOUT --output Syslog --output_options '{"hostname":"127.0.0.1","port":"5140"}'
+    message-pass --input STDIN --output Syslog --output_options '{"hostname":"127.0.0.1","port":"5140"}'
 
 =head1 DESCRIPTION
 

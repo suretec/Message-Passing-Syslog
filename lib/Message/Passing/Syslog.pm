@@ -15,7 +15,7 @@ Message::Passing::Syslog - input and output messages from/to Syslog.
 
     message-pass --output STDOUT --input Syslog --input_options '{"port":"5140"}'
 
-    message-pass --input STDIN --output Syslog --output_options 'xxx'
+    message-pass --input STDIN --output Syslog --output_options '{"hostname":"127.0.0.1","port":"5140"}'
 
 =head1 DESCRIPTION
 
