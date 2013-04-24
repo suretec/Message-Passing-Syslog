@@ -1,3 +1,4 @@
+0.009
     - Change remote_hostname to return the remote IP address
       rather than doing a reverse DNS lookup per syslog packet
     - Add example of the Input::Syslog message format
