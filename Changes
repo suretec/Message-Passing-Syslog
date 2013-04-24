@@ -1,5 +1,6 @@
     - Change remote_hostname to return the remote IP address
       rather than doing a reverse DNS lookup per syslog packet
+    - Add example of the Input::Syslog message format
 
 0.008
     - Add remote_hostname attribute to Input::Syslog (abraxxa)

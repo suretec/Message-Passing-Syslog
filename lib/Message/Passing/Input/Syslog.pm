@@ -122,6 +122,20 @@ Provides a syslog server for UDP syslog.
 
 Can be used to ship syslog logs into a L<Message::Passing> system.
 
+The message is a hashref:
+
+    {
+        epochtime     => 1366803118,
+        facility_code => 19,
+        facility      => 'error',
+        severity_code => 3,
+        severity      => 'local3',
+        message       => 'the received syslog message',
+
+        # depending on the remote_hostname attribute
+        hostname      => 'syslog.company.tld' || '192.0.2.29',
+    }
+
 =head1 ATTRIBUTES
 
 =head2 hostname
