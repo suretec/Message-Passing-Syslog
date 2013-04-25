@@ -14,9 +14,10 @@ use Message::Passing::Output::Callback;
 use AnyEvent;
 
 my $cv = AnyEvent->condvar;
+my $host = '127.0.0.1';
 
 my $syslog = Message::Passing::Output::Syslog->new(
-    hostname => '127.0.0.1',
+    hostname => $host,
     port     => '5140',
 );
 
@@ -59,6 +60,7 @@ is_deeply \@msgs, [
         program_pid     => undef,
         content         => 'foo',
         message         => 'foo',
+        received_from   => $host,
     }
 ];
 

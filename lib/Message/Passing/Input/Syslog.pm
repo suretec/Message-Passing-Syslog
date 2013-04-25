@@ -22,11 +22,6 @@ has protocol => (
     default => sub { 'udp' },
 );
 
-has remote_hostname => (
-    is => 'ro',
-    default => sub { 0 },
-);
-
 sub BUILD {
     my $self = shift;
     die sprintf("Protocol '%s' is not supported, only 'udp' currently", $self->protocol)
@@ -39,6 +34,11 @@ sub _send_data {
     my $msg = parse_syslog_line( $message );
     my $time = defined $msg->{datetime_raw} ? parsedate($msg->{datetime_raw}) : undef;
     $msg->{epochtime} = $time || time();
+
+    my ( $err, $ipaddr, $port ) = getnameinfo( $from, NI_NUMERICHOST,  NI_NUMERICSERV );
+    $msg->{received_from} = $ipaddr
+        unless $err;
+
     $self->output_to->consume( $msg );
 }
 
@@ -77,12 +77,6 @@ to bind to it.
 =head2 protocol
 
 The protocol to listen on, currently only UDP is supported.
-
-=head2 remote_hostname
-
-Set to true to store the remote ip address instead of the servers' hostname
-in the hostname attribute.
-Defaults to false for backward compatibility.
 
 =head1 SEE ALSO
 

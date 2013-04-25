@@ -13,8 +13,10 @@ use Net::Syslog;
 use AnyEvent;
 
 my $cv = AnyEvent->condvar;
+my $host = '127.0.0.1';
 
 my $syslog = Net::Syslog->new(
+    SyslogHost => $host,
     SyslogPort => 5140,
     Name       => 'progname',
     Facility   => 'local3',
@@ -63,6 +65,7 @@ is_deeply \@msgs, [
         program_pid     => undef,
         content         => 'foo',
         message         => 'progname: foo',
+        received_from   => $host,
     }
 ];
 
