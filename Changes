@@ -1,3 +1,4 @@
+0.010
     - Use Parse::Syslog::Line for parsing of syslog messages in Input::Syslog
     - Remove remote_hostname attribute in Input::Syslog because RFC5426 states
       in section 3.4:
