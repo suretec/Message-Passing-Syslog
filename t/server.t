@@ -7,7 +7,6 @@ BEGIN {
         || plan skip_all => "Net::Syslog needed for this test";
 }
 
-use Sys::Hostname::Long qw/ hostname_long /;
 use Message::Passing::Input::Syslog;
 use Message::Passing::Output::Callback;
 use Net::Syslog;
@@ -17,6 +16,11 @@ my $cv = AnyEvent->condvar;
 
 my $syslog = Net::Syslog->new(
     SyslogPort => 5140,
+    Name       => 'progname',
+    Facility   => 'local3',
+    Priority   => 'error',
+    Pid        => 'undef',
+    rfc3164    => 1,
 );
 
 my @msgs;
@@ -37,17 +41,28 @@ my $idle; $idle = AnyEvent->idle(cb => sub {
 $cv->recv;
 
 ok scalar(@msgs);
+
+delete $msgs[0]->{message_raw};
+delete $msgs[0]->{datetime_raw};
 my $time = delete $msgs[0]->{epochtime};
 like $time, qr/^\d+$/;
 
 is_deeply \@msgs, [
     {
-        'hostname' => hostname_long(),
-        'message' => "server.t[$$]: foo",
-        'facility' => 'local4',
-        'severity' => 'error',
-        'severity_code' => 3,
-        'facility_code' => 21
+        preamble        => '155',
+        priority        => 'err',
+        priority_int    => 3,
+        facility        => 'local3',
+        facility_int    => 152,
+        host_raw        => '127.0.1.1',
+        host            => '127.0.1.1',
+        domain          => undef,
+        program_raw     => 'progname',
+        program_name    => 'progname',
+        program_sub     => undef,
+        program_pid     => undef,
+        content         => 'foo',
+        message         => 'progname: foo',
     }
 ];
 

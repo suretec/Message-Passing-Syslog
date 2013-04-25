@@ -2,11 +2,13 @@ package Message::Passing::Input::Syslog;
 use Moo;
 use MRO::Compat;
 use Time::ParseDate;
-use Sys::Hostname::Long qw/ hostname_long /;
 use Socket qw( getnameinfo NI_NUMERICHOST  NI_NUMERICSERV );
-use namespace::clean -except => 'meta';
+use Parse::Syslog::Line qw( parse_syslog_line );
 
-my $our_hostname = hostname_long();
+# for speed, we don't need the created DateTime object
+$Parse::Syslog::Line::DateTimeCreate = 0;
+
+use namespace::clean -except => 'meta';
 
 extends 'Message::Passing::Input::Socket::UDP';
 
@@ -25,57 +27,6 @@ has remote_hostname => (
     default => sub { 0 },
 );
 
-our $SYSLOG_REGEXP = q|
-^<(\d+)>                       # priority -- 1
-    (?:
-        (\S{3})\s+(\d+)        # month day -- 2, 3
-        \s
-        (\d+):(\d+):(\d+)      # time  -- 4, 5, 6
-    )?
-    \s*
-    (.*)                       # text  --  7
-$
-|;
-
-my %syslog_severities = do { my $i = 0; map { $i++ => $_ } (qw/
-    emergency
-    alert
-    critical
-    error
-    warning
-    notice
-    informational
-    debug
-/) };
-
-my %syslog_facilities = do { my $i = 0; map { $i++ => $_ } (qw/
-    kernel
-    user
-    mail
-    daemon
-    auth
-    syslog
-    lpr
-    news
-    uucp
-    cron
-    authpriv
-    security2
-    ftp
-    NTP
-    audit
-    alert
-    clock2
-    local0
-    local1
-    local2
-    local3
-    local4
-    local5
-    local6
-    local7
-/) };
-
 sub BUILD {
     my $self = shift;
     die sprintf("Protocol '%s' is not supported, only 'udp' currently", $self->protocol)
@@ -84,26 +35,11 @@ sub BUILD {
 
 sub _send_data {
     my ( $self, $message, $from ) = @_;
-    if ( $message =~ s/$SYSLOG_REGEXP//sx ) {
-        my $time = $2 && parsedate("$2 $3 $4:$5:$6");
-        my $facility = int($1/8);
-        my $severity = int($1%8);
-        my $log_hostname = $our_hostname;
-        if ( $self->remote_hostname ) {
-            my ( $err, $hostname, $servicename ) = getnameinfo( $from, NI_NUMERICHOST,  NI_NUMERICSERV );
-            $log_hostname = $hostname
-                unless $err;
-        }
-        $self->output_to->consume({
-            epochtime     => $time || time(),
-            facility_code => $facility,
-            severity_code => $severity,
-            facility => $syslog_facilities{$facility} || 'unknown',
-            severity => $syslog_severities{$severity} || 'unknown',
-            message      => $7,
-            hostname => $log_hostname,
-        });
-    }
+
+    my $msg = parse_syslog_line( $message );
+    my $time = defined $msg->{datetime_raw} ? parsedate($msg->{datetime_raw}) : undef;
+    $msg->{epochtime} = $time || time();
+    $self->output_to->consume( $msg );
 }
 
 1;
@@ -122,19 +58,7 @@ Provides a syslog server for UDP syslog.
 
 Can be used to ship syslog logs into a L<Message::Passing> system.
 
-The message is a hashref:
-
-    {
-        epochtime     => 1366803118,
-        facility_code => 19,
-        facility      => 'error',
-        severity_code => 3,
-        severity      => 'local3',
-        message       => 'the received syslog message',
-
-        # depending on the remote_hostname attribute
-        hostname      => 'syslog.company.tld' || '192.0.2.29',
-    }
+For the message format see L<Parse::Syslog::Line>.
 
 =head1 ATTRIBUTES
 

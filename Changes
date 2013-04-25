@@ -1,3 +1,5 @@
+    - Use Parse::Syslog::Line for parsing of syslog messages in Input::Syslog
+
 0.009
     - Change remote_hostname to return the remote IP address
       rather than doing a reverse DNS lookup per syslog packet

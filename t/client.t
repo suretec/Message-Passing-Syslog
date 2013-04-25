@@ -38,17 +38,27 @@ my $idle; $idle = AnyEvent->idle(cb => sub {
 $cv->recv;
 
 ok scalar(@msgs);
+delete $msgs[0]->{message_raw};
+delete $msgs[0]->{datetime_raw};
 my $time = delete $msgs[0]->{epochtime};
 like $time, qr/^\d+$/;
 
 is_deeply \@msgs, [
     {
-        'hostname' => hostname_long(),
-        'message' => "client.t[$$]: foo",
-        'facility' => 'local4',
-        'severity' => 'error',
-        'severity_code' => 3,
-        'facility_code' => 21
+        preamble        => '171',
+        priority        => 'err',
+        priority_int    => 3,
+        facility        => 'local5',
+        facility_int    => 168,
+        host_raw        => "client.t[$$]:",
+        host            => 'client',
+        domain          => "t[$$]:",
+        program_raw     => undef,
+        program_name    => undef,
+        program_sub     => undef,
+        program_pid     => undef,
+        content         => 'foo',
+        message         => 'foo',
     }
 ];
 
