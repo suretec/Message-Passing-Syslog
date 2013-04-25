@@ -58,7 +58,8 @@ Provides a syslog server for UDP syslog.
 
 Can be used to ship syslog logs into a L<Message::Passing> system.
 
-For the message format see L<Parse::Syslog::Line>.
+The message format is a hashref containing all keys returned from
+L<Parse::Syslog::Line/parse_syslog_line> plus received_from.
 
 =head1 ATTRIBUTES
 
