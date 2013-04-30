@@ -1,3 +1,4 @@
+0.011
     - Add Socket dependency which is a core module but older versions lack
       getnameinfo (thanks CPAN Testers!)
 
