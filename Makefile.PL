@@ -23,6 +23,7 @@ requires 'Message::Passing' => '0.104';
 requires 'Sys::Hostname::Long';
 requires 'Time::ParseDate';
 requires 'Parse::Syslog::Line' => 1.2;
+requires 'Socket' => 2.008;
 
 test_requires 'Test::More' => '0.88';
 
