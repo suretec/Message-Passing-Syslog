@@ -2,11 +2,6 @@ use strict;
 use warnings;
 use Test::More;
 
-BEGIN {
-    do { local $@; eval { require Net::Syslog } }
-        || plan skip_all => "Net::Syslog needed for this test";
-}
-
 use Sys::Hostname::Long qw/ hostname_long /;
 use Message::Passing::Output::Syslog;
 use Message::Passing::Input::Syslog;

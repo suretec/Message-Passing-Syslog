@@ -1,3 +1,7 @@
+    - Don't skip client.t without Net::Syslog installed
+
+as it isn't needed for this test
+
 0.011
     - Add Socket dependency which is a core module but older versions lack
       getnameinfo (thanks CPAN Testers!)
