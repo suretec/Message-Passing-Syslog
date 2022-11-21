@@ -1,4 +1,5 @@
     - Don't skip client.t without Net::Syslog installed
+    - Fix tests for changing parsing by Parse::Syslog::Line
 
 as it isn't needed for this test
 
