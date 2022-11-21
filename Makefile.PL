@@ -8,7 +8,7 @@ use Module::Install::Authority;
 all_from 'lib/Message/Passing/Syslog.pm';
 
 license 'perl';
-authority('cpan:GHENRY');
+authority('cpan:ABRAXXA');
 resources(
     repository => "git://github.com/suretec/Message-Passing-Syslog.git",
 );
