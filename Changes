@@ -1,8 +1,8 @@
-    - Fix missing Moose dependency
+    - Fix missing Moose dependency (RT#145209)
       by replacing it with Moo
 
 0.013  2022-11-22 08:23:00+01:00 Europe/Vienna
-    - Fix Net::Syslog dependency
+    - Fix Net::Syslog dependency (RT#145209)
       That was incorrectly marked as author-only
 
 0.012  2022-11-21 10:50:00+01:00 Europe/Vienna
