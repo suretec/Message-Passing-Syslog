@@ -1,3 +1,6 @@
+    - Fix Net::Syslog dependency
+      That was incorrectly marked as author-only
+
 0.012  2022-11-21 10:50:00+01:00 Europe/Vienna
     - Don't skip client.t without Net::Syslog installed
     - Fix tests for changing parsing by Parse::Syslog::Line
